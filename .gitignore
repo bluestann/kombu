@@ -25,3 +25,7 @@ kombu/tests/cover
 kombu/tests/coverage.xml
 .coverage
 dump.rdb
+.cache/
+.eggs/
+.idea/
+env/
