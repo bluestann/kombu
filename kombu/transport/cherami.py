@@ -104,11 +104,6 @@ class Transport(virtual.Transport):
     driver_type = 'cherami'
     driver_name = 'cherami-client'
 
-    implements = virtual.Transport.implements.extend(
-        async=True,
-        exchange_type=frozenset(['direct']),
-    )
-
     connection_errors = (
         virtual.Transport.connection_errors,
     )
