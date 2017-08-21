@@ -5,7 +5,8 @@ from cherami_client.publisher import Publisher
 
 from kombu.async import get_event_loop
 from kombu.log import get_logger
-from kombu.utils.json import loads, dumps
+
+from ujson import loads, dumps
 
 from . import virtual
 
