@@ -23,6 +23,7 @@ class Channel(virtual.Channel):
     _consumer = None
 
     def __init__(self, *args, **kwargs):
+        super(Channel, self).__init__(*args, **kwargs)
 
         # event_loop
         self.hub = kwargs.get('hub') or get_event_loop()
