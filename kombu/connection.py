@@ -514,7 +514,7 @@ class Connection(object):
         return self.ensure(revive, revive, **ensure_options)
 
     def create_transport(self):
-        return self.get_transport_cls()(client=self, **kwargs=self.kwargs) # cherami
+        return self.get_transport_cls()(client=self, **self.kwargs) # cherami
 
     def get_transport_cls(self):
         """Get the currently used transport class."""
