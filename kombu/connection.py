@@ -190,6 +190,9 @@ class Connection(object):
 
         self.declared_entities = set()
 
+        # kwargs for cherami transport
+        self.kwargs = kwargs
+
     def switch(self, url):
         """Switch connection parameters to use a new URL (does not
         reconnect)"""
@@ -511,7 +514,7 @@ class Connection(object):
         return self.ensure(revive, revive, **ensure_options)
 
     def create_transport(self):
-        return self.get_transport_cls()(client=self)
+        return self.get_transport_cls()(client=self, **kwargs=self.kwargs) # cherami
 
     def get_transport_cls(self):
         """Get the currently used transport class."""
