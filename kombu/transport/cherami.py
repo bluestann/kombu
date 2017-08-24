@@ -5,10 +5,10 @@ from cherami_client.publisher import Publisher
 
 from kombu.async import get_event_loop
 from kombu.log import get_logger
-
-from ujson import loads, dumps
+from anyjson import loads, dumps
 
 from . import virtual
+
 
 DEFAULT_PORT = 4922
 
@@ -43,12 +43,11 @@ class Channel(virtual.Channel):
         self.publisher.publish(str(0), dumps(message))
 
     def _get(self, queue, callback=None):
-        while True:
-            try:
-                results = self.consumer.receive(num_msgs=self.default_message_batch_size)
-                self._on_message_ready(queue, results)
-            except Exception as e:
-                logger.info('Failed to receive messages: {0}'.format(e))
+        try:
+            results = self.consumer.receive(num_msgs=self.default_message_batch_size)
+            self._on_message_ready(queue, results)
+        except Exception as e:
+            logger.info('Failed to receive messages: {0}'.format(e))
 
     def _on_message_ready(self, queue, results):
         for res in results:
@@ -60,6 +59,8 @@ class Channel(virtual.Channel):
             except Exception as e:
                 self.consumer.nack(delivery_token)
                 logger.info('Failed to process a message:  {0}'.format(e))
+        # done processing messages, consume again
+        self.hub.call_soon(self._get, queue)
 
     def _handle_message(self, queue, data):
         message = loads(data)
